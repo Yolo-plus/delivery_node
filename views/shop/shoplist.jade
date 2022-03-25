@@ -1,0 +1,86 @@
+extends ../common/common
+block title 
+  | 商家列表
+block main
+  .mws-panel.grid_8
+    .mws-panel-header
+      span
+        i.icon-table
+        | 商家列表
+    script(src="https://cdn.bootcdn.net/ajax/libs/jquery/3.6.0/jquery.min.js")
+    .mws-panel-body.no-padding
+      #DataTables_Table_1_wrapper.dataTables_wrapper(role='grid')
+        table#DataTables_Table_1.mws-datatable-fn.mws-table.dataTable(aria-describedby='DataTables_Table_1_info')
+          thead
+            tr(role='row')
+              th.sorting_asc(role='columnheader' tabindex='0' aria-controls='DataTables_Table_1' rowspan='1' colspan='1' aria-sort='ascending' aria-label='Rendering engine: activate to sort column descending' style='width: 258px;') 序号
+              th.sorting(role='columnheader' tabindex='0' aria-controls='DataTables_Table_1' rowspan='1' colspan='1' aria-label='Browser: activate to sort column ascending' style='width: 333px;') 商家名称
+              th.sorting(role='columnheader' tabindex='0' aria-controls='DataTables_Table_1' rowspan='1' colspan='1' aria-label='Platform(s): activate to sort column ascending' style='width: 338px;') 图片
+              th.sorting(role='columnheader' tabindex='0' aria-controls='DataTables_Table_1' rowspan='1' colspan='1' aria-label='Engine version: activate to sort column ascending' style='width: 338px;') 描述
+              th.sorting(role='columnheader' tabindex='0' aria-controls='DataTables_Table_1' rowspan='1' colspan='1' aria-label='Engine version: activate to sort column ascending' style='width: 338px;') 配送费
+              th.sorting(role='columnheader' tabindex='0' aria-controls='DataTables_Table_1' rowspan='1' colspan='1' aria-label='Engine version: activate to sort column ascending' style='width: 338px;') 操作
+          tbody(role='alert' aria-live='polite' aria-relevant='all')
+          -for(let i = 0; i < data.length; i++)
+            tr.odd
+              td #{data[i].id}
+              td #{data[i].name}
+              td 
+                img(src="https://delivery-yolo.oss-cn-beijing.aliyuncs.com/#{data[i].pic}" alt="" width="100" style="display:block;margin:0 auto;")
+              td #{data[i].descs}
+              td #{data[i].fee}
+              td 
+                a(href="/shopdel?id=#{data[i].id}" class="btn btn-danger" style="margin-right:5px") 删除 
+                a(href="/shopedit?id=#{data[i].id}" class="btn btn-warning") 修改 
+        #DataTables_Table_1_paginate.dataTables_paginate.paging_full_numbers
+          button(style="padding:2px 6px;")
+            span(id='prev') 上一页
+          span(id='pages'  style="margin-left:5px;margin-right:5px;")
+          button(style="padding:2px 6px;")
+            span(id='next') 下一页
+          button(style="background:transparent;border-color:transparent;padding-right:0px")
+            span(style="color:white")  总条数: 
+              b #{count} 
+          //- page*1转化为numebr
+          button(style="background:transparent;border-color:transparent;")
+            span(style="color:white") 当前页: 
+              b #{page * 1 + 1}
+        script(type='text/javascript').
+          var count = #{count}  // 总条数
+          var page = #{page}  // 当前页-1
+
+          // 获取页面的位置
+          var pages = document.getElementById('pages')
+          var prev = document.getElementById('prev')
+          var next = document.getElementById('next')
+          // 生成页码
+          function createPages() {
+            pages.innerHTML = ''
+            for(var i = 0; i < Math.ceil(count/3); i++) {
+              let a = (page === i) ? 'btn-success' : 'btn-danger'
+              pages.innerHTML += `<button class="btn ${a}" json-page="${i}">${i + 1}</button>`
+            }
+          }
+
+          createPages()
+
+          // 点击按钮翻页
+          $('.btn').on('click', function(){
+            let page = $(this).attr('json-page')
+            location.href = '/shoplist?page=' + page
+          })
+
+          // 点击上一页
+          prev.onclick = function () {
+            if (page >= 1) {
+              page--
+              location.href = '/shoplist?page=' + page
+            }
+          }
+
+          // 点击下一页
+          next.onclick = function () {
+            if(page < Math.ceil(count / 3) - 1) {
+              page++
+              location.href = '/shoplist?page=' + page
+            }
+          }

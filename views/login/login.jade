@@ -1,0 +1,33 @@
+doctype html
+html(lang='en')
+  head
+    meta(charset='utf-8')
+    meta(name='viewport' content='width=device-width,initial-scale=1.0')
+    link(rel='stylesheet' type='text/css' href='bootstrap/css/bootstrap.min.css' media='screen')
+    link(rel='stylesheet' type='text/css' href='css/fonts/ptsans/stylesheet.css' media='screen')
+    link(rel='stylesheet' type='text/css' href='css/fonts/icomoon/style.css' media='screen')
+    link(rel='stylesheet' type='text/css' href='css/login.css' media='screen')
+    link(rel='stylesheet' type='text/css' href='css/mws-theme.css' media='screen')
+    title Document
+  body
+    #mws-login-wrapper
+      #mws-login
+        h1 登录
+        .mws-login-lock
+          i.icon-lock
+        #mws-login-form
+          form.mws-form(action='/loginsubmit' method='post')
+            .mws-form-row
+              .mws-form-item
+                input.mws-login-username.required(type='text' name='name' placeholder='用户名' autocomplete="off")
+            .mws-form-row
+              .mws-form-item
+                input.mws-login-password.required(type='password' name='password' placeholder='密码')
+            .mws-form-row
+              input.btn.btn-success.mws-login-button(type='submit' value='登录')
+    script(src='js/libs/jquery-1.8.3.min.js')
+    script(src='js/libs/jquery.placeholder.min.js')
+    script(src='custom-plugins/fileinput.js')
+    script(src='jui/js/jquery-ui-effects.min.js')
+    script(src='plugins/validate/jquery.validate-min.js')
+    script(src='js/core/login.js')
